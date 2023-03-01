@@ -1,0 +1,11 @@
+.root {
+    width: 880px;
+    max-width: 880px;
+    min-height: 100vh;
+    margin: 0 auto;
+    font-family: 'Inter', 'Arial', 'Helvetica', sans-serif;
+    background-color: black;
+    color: #ffffff;
+    display: flex;
+    flex-direction: column;
+}
