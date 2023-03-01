@@ -20,6 +20,7 @@ function Main(props) {
             setCards(res);
         })
     },[])
+    1
 
     return (
         <main className="content">
