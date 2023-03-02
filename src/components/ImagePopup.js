@@ -1,7 +1,7 @@
 import React from "react";
 import Popup from "./Popup";
 
-function PopupWithImage(props) {
+function ImagePopup(props) {
 
     return (
         <Popup 
@@ -10,9 +10,9 @@ function PopupWithImage(props) {
         isOpen={props.isOpen}
         onClose={props.onClose}
         >
-           <img src={props.cardLink} alt="картинка из интернета" className="popup__foto"/>
+           <img src={props.card.link} alt="картинка из интернета" className="popup__foto"/>
                 <p className="popup__place-name"></p>
         </Popup>
     );
 }
-export default PopupWithImage;
+export default ImagePopup;
