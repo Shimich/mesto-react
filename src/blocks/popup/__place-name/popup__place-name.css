@@ -1,0 +1,8 @@
+.popup__place-name{
+    position: absolute;
+    bottom: -24.5px;
+    margin: 0;
+    font-size: 12px;
+    line-height: 14.5px;
+    font-weight: 400;
+}

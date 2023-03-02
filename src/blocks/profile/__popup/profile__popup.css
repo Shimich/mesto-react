@@ -1,0 +1,32 @@
+.profile__popup {
+    background-color: transparent;
+    background-image: url(../../../images/edit.svg);
+    background-position: center;
+    background-repeat: no-repeat;
+    border: 1px solid white;
+    align-self: baseline;
+}
+
+@media screen and (min-width: 900px) {
+    .profile__popup {
+        height: 24px;
+        width: 24px;
+        background-size: 10px;
+        margin-left: 18px;
+    }
+}
+
+@media screen and (max-width: 900px) {
+    .profile__popup {
+        grid-area: edit;
+        align-self: center;
+        height: 18px;
+        width: 18px;
+        background-size: 7.5px;
+    }
+}
+
+.profile__popup:hover{
+    opacity: 0.6;
+    cursor: pointer;
+}

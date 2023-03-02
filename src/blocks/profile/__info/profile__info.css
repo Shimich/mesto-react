@@ -1,0 +1,29 @@
+.profile__info {
+    position: relative;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: baseline;
+    max-width: 400px;
+}
+
+@media screen and (min-width: 900px) {
+    .profile__info {
+        flex-direction: row;
+        flex-wrap: wrap;
+        margin: 22px 0 auto 30px;
+    }
+}
+
+@media screen and (max-width: 900px) {
+    .profile__info {
+        display: grid;
+        grid-template-columns: 1fr minmax(min-content, max-content) 1fr;
+        grid-template-rows: max-content max-content;
+        grid-template-areas: ". name edit"
+            "description description description";
+        gap: 14px 10px;
+        align-items: center;
+        margin: 22px auto 36px;
+    }
+}

@@ -1,0 +1,6 @@
+.popup__cadre{
+    display: inline-flex;
+    position: relative;
+    padding: 0;
+    margin: auto auto;
+}
