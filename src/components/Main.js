@@ -15,10 +15,17 @@ function Main(props) {
             setUserDescription(res.about)
             setUserAvatar(res.avatar)
         })
+        .catch((err) => {
+            console.log(err); 
+          });
+
         api.getInitialCards()
         .then((res)=>{
             setCards(res);
         })
+        .catch((err) => {
+            console.log(err); 
+          });// вроде есть проверка в апи
     },[])
     
     return (

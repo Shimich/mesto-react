@@ -7,7 +7,7 @@ function Card ({ card, onClick }) {
     
     return(
         <div className="element" onClick={handleCardClick}>
-            <img src={card.link} alt="картинка из интернета" className="element__foto"/>
+            <img src={card.link} alt={`${card.name} картинка из интернета`} className="element__foto"/>
             <button aria-label="удалить" type="button" className="element__btn-delete"></button>
             <div className="element__info">
                 <h2 className="element__text">{card.name}</h2>

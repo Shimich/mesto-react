@@ -22,7 +22,7 @@ function App() {
     }
 
     const [isImagePopupOpen, setImagePopupState] = React.useState(false);
-    const [selectedCard, setSelectedCard] = React.useState({ link: '1' });
+    const [selectedCard, setSelectedCard] = React.useState({name: '', link: ''});
     const handleCardClick = (card) => {
         setSelectedCard(card)
         setImagePopupState(true);
@@ -34,7 +34,7 @@ function App() {
             setAddPopupState(false);
             setEditAvatarPopupState(false);
             setImagePopupState(false);
-            setSelectedCard('');
+            setSelectedCard({name: '', link: ''});
         }
     }
 

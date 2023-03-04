@@ -10,8 +10,8 @@ function ImagePopup(props) {
         isOpen={props.isOpen}
         onClose={props.onClose}
         >
-           <img src={props.card.link} alt="картинка из интернета" className="popup__foto"/>
-                <p className="popup__place-name"></p>
+           <img src={props.card.link} alt={`Попап картинки ${props.card.name}`} className="popup__foto"/>
+                <p className="popup__place-name">{props.card.name}</p>
         </Popup>
     );
 }
