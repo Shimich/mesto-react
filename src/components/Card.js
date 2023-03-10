@@ -9,17 +9,17 @@ function Card({ card, onClick, onLikeClick, onDeleteClick }) {
     const isOwner = card.owner._id === currentUser._id;
 
     function handleCardClick(evt) {
-        if (evt.target.classList.contains('element__card'))
+        if (evt.target.classList.contains('element__foto'))
             onClick(card)
     }
 
     function handleLikeClick() {
-        onLikeClick(card)
+        onLikeClick(card);
     }
     function handleDeleteButtonClick() {
         onDeleteClick(card);
     }
-   
+
     return (
         <div className="element" onClick={handleCardClick}>
             <img ref={imgRef} src={card.link} alt={`${card.name} картинка из интернета`} className="element__foto" />

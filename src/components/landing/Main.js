@@ -1,12 +1,10 @@
-import React from "react";
+import React, {useContext} from "react";
 //import api from '../../utils/Api.js';
 import Card from "../Card.js";
 import CurrentUserContext from "./../../contexts/CurrentUserContext"
-import { useState } from "react";
-
 
 function Main(props) {
-    const currentUser=React.useContext(CurrentUserContext);
+    const currentUser = useContext(CurrentUserContext);
 
     // const [userName,setUserName] = React.useState('')
     // const [userDescription, setUserDescription] = React.useState('')
@@ -31,8 +29,8 @@ function Main(props) {
     //     .catch((err) => {
     //         console.log(err); 
     //       });// вроде есть проверка в апи
-    // },[])
-    
+    // },[]) старое 
+
     return (
         <main className="content">
             <section className="profile">
@@ -47,7 +45,7 @@ function Main(props) {
                 <button aria-label="добавить картинку" type="button" className="profile__add" onClick={props.onAddPlace}></button>
             </section>
             <section className="elements">
-                {props.cards.map(card => (<Card card={card} onClick={props.onCardClick} key={card._id} onLikeClick={props.onCardLike} onDeleteClick={props.onCardDelete}/>))}
+                {props.cards.map(card => (<Card card={card} onClick={props.onCardClick} key={card._id} onLikeClick={props.onCardLike} onDeleteClick={props.onCardDelete} />))}
             </section>
         </main>
     )

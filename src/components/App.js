@@ -9,7 +9,6 @@ import EditAvatarPopup from './popups/EditAvatarPopup.js';
 import AddPopup from './popups/AddPopup.js';
 import CurrentUserContext from "../contexts/CurrentUserContext";
 import api from '../utils/Api.js';
-import { esc } from '../utils/constants.js'
 
 function App() {
     const [isEditProfilePopupOpen, setEditProfilePopupState] = useState(false);
@@ -30,7 +29,7 @@ function App() {
     const [isImagePopupOpen, setImagePopupState] = useState(false);
     const [selectedCard, setSelectedCard] = useState({ name: '', link: '' });
     const handleCardClick = (card) => {
-        setSelectedCard(card)
+        setSelectedCard(card);
         setImagePopupState(true);
     }
 
@@ -61,6 +60,7 @@ function App() {
     const handleAddCard = (name, link) => {
         api.postCard(link, name)
             .then(newCard => setCards([newCard, ...cards]))
+            .then(closeAllPopups)
             .then(closeAllPopups)
     }
 

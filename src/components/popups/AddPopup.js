@@ -33,12 +33,12 @@ function AddPopup(props) {
         >
             <div className="popup__input-container">
                 <input type="text" className="popup__input" name="place" id="text-place" placeholder="Название"
-                    minLength="2" maxLength="30" required onChange={handleNameChange} />
+                    minLength="2" maxLength="30" required onChange={handleNameChange} value={`${name}`}/>
                 <span className="popup__input-error text-place-error"></span>
             </div>
             <div className="popup__input-container">
                 <input type="url" className="popup__input" name="url" id="url" placeholder="Ссылка на картину"
-                    required onChange={handleLinkChange} />
+                    required onChange={handleLinkChange} value={`${link}`}/>
                 <span className="popup__input-error url-error"></span>
             </div>
         </PopupWithForm>
