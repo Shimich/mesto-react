@@ -1,14 +1,21 @@
 import PopupWithForm from "./PopupWithForm";
-import React, {useRef} from "react";
+import React, { useRef } from "react";
 
 function EditAvatarPopup(props) {
     const linkRef = useRef()
 
-    function handleSubmit(evt) {
-        evt.preventDefault();
-        props.onUpdateAvatar(linkRef.current.value);
+    function clear(){
         linkRef.current.value = '';
     }
+
+    function handleSubmit(evt) {
+        evt.preventDefault();
+        props.onUpdateAvatar(linkRef.current.value, clear)
+            }
+
+    // useEffect(() => {
+    //     linkRef.current.value = '';
+    // }, [props.isOpen]);//isOpen меняется и при закрытии
 
     return (
         <PopupWithForm

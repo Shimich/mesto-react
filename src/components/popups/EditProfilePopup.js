@@ -15,7 +15,7 @@ function EditProfilePopup(props) {
     function handleNameChange(evt) {
         setName(evt.target.value)
     }
-    
+
     function handleDescriptionChange(evt) {
         setDescription(evt.target.value)
     }
@@ -38,13 +38,13 @@ function EditProfilePopup(props) {
             <div className="popup__input-container">
                 <input type="text" className="popup__input" name="name" placeholder="Имя" id="text-name"
                     minLength="2" maxLength="40" required
-                    defaultValue={name} onChange={handleNameChange} />
+                    value={name || ''} onChange={handleNameChange} />
                 <span className="popup__input-error text-name-error"></span>
             </div>
             <div className="popup__input-container">
                 <input type="text" className="popup__input" name="description" placeholder="Профессия"
                     id="text-description" minLength="2" maxLength="400" required
-                    defaultValue={description} onChange={handleDescriptionChange} />
+                    value={description || ''} onChange={handleDescriptionChange} />
                 <span className="popup__input-error text-description-error"></span>
             </div>
         </PopupWithForm>

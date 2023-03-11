@@ -1,11 +1,11 @@
 import React from "react";
 
-function Footer(props) {
-return(
-<footer className="footer">
-<p className="footer__text"> &copy; 2020 Mesto Russia</p>
-</footer>
-);
+function Footer() {    
+    return (
+        <footer className="footer">
+            <p className="footer__text"> &copy; {new Date().getFullYear()} Mesto Russia</p>
+        </footer>
+    );
 }
 
 export default Footer;

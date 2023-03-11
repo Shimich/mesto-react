@@ -8,9 +8,8 @@ function Card({ card, onClick, onLikeClick, onDeleteClick }) {
     const isLiked = card.likes.some(i => i._id === currentUser._id);
     const isOwner = card.owner._id === currentUser._id;
 
-    function handleCardClick(evt) {
-        if (evt.target.classList.contains('element__foto'))
-            onClick(card)
+    function handleCardClick() {
+        onClick(card)
     }
 
     function handleLikeClick() {
@@ -21,8 +20,8 @@ function Card({ card, onClick, onLikeClick, onDeleteClick }) {
     }
 
     return (
-        <div className="element" onClick={handleCardClick}>
-            <img ref={imgRef} src={card.link} alt={`${card.name} картинка из интернета`} className="element__foto" />
+        <div className="element" >
+            <img ref={imgRef} src={card.link} alt={`${card.name} картинка из интернета`} className="element__foto" onClick={handleCardClick}/>
             <button aria-label="удалить" type="button" className={`element__btn-delete ${isOwner ? '' : "element__btn-delete_hide"}`} onClick={handleDeleteButtonClick}></button>
             <div className="element__info">
                 <h2 className="element__text">{card.name}</h2>

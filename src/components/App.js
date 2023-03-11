@@ -11,33 +11,33 @@ import CurrentUserContext from "../contexts/CurrentUserContext";
 import api from '../utils/Api.js';
 
 function App() {
-    const [isEditProfilePopupOpen, setEditProfilePopupState] = useState(false);
+    const [isEditProfilePopupOpen, setIsEditProfilePopupOpen] = useState(false);
     const handleEditProfileClick = () => {
-        setEditProfilePopupState(true)
+        setIsEditProfilePopupOpen(true)
     }
 
-    const [isAddPlacePopupOpen, setAddPopupState] = useState(false);
+    const [isAddPlacePopupOpen, setIsAddPlacePopupOpen] = useState(false);
     const handleAddPlaceClick = () => {
-        setAddPopupState(true);
+        setIsAddPlacePopupOpen(true);
     }
 
-    const [isEditAvatarPopupOpen, setEditAvatarPopupState] = useState(false);
+    const [isEditAvatarPopupOpen, setIsEditAvatarPopupOpen] = useState(false);
     const handleEditAvatarClick = () => {
-        setEditAvatarPopupState(true);
+        setIsEditAvatarPopupOpen(true);
     }
 
-    const [isImagePopupOpen, setImagePopupState] = useState(false);
+    const [isImagePopupOpen, setIsImagePopupOpen] = useState(false);
     const [selectedCard, setSelectedCard] = useState({ name: '', link: '' });
     const handleCardClick = (card) => {
         setSelectedCard(card);
-        setImagePopupState(true);
+        setIsImagePopupOpen(true);
     }
 
     const closeAllPopups = () => {
-        setEditProfilePopupState(false);
-        setAddPopupState(false);
-        setEditAvatarPopupState(false);
-        setImagePopupState(false);
+        setIsEditProfilePopupOpen(false);
+        setIsAddPlacePopupOpen(false);
+        setIsEditAvatarPopupOpen(false);
+        setIsImagePopupOpen(false);
         setSelectedCard({ name: '', link: '' });
 
     }
@@ -47,31 +47,36 @@ function App() {
         api.patchUserInfo(name, description)
             .then(res => setCurrentUser(res))
             .then(closeAllPopups)
+            .catch(() => console.log('handleUpdateUser'))
     }
 
-    const handleUpdateAvatar = (link) => {
+    const handleUpdateAvatar = (link, clear) => {
         api.patchAvatarInfo(link)
-        api.getUserInfo()
-            .then(setCurrentUser)//res=>setCurrentUser(res)
+            .then(setCurrentUser)
             .then(closeAllPopups)
+            .then(clear)
+            .catch(() => console.log('handleUpdateAvatar'))
     }
 
     const [cards, setCards] = useState([]);
-    const handleAddCard = (name, link) => {
+    const handleAddCard = (name, link, clear) => {
         api.postCard(link, name)
             .then(newCard => setCards([newCard, ...cards]))
             .then(closeAllPopups)
-            .then(closeAllPopups)
+            .then(clear)
+            .catch(() => console.log('handleAddCard'))
     }
 
     useEffect(() => {
         api.getUserInfo()
-            .then(setCurrentUser)//(res)=>{setCards(res) //если не сработает поменять на такую конструкию
-    }, [isEditAvatarPopupOpen])
+            .then(setCurrentUser)
+            .catch(() => console.log('getUserInfo'))
+    }, [])
 
     useEffect(() => {
         api.getInitialCards()
             .then(setCards)
+            .catch(() => console.log('getInitialCards'));
     }, [])
 
     const deleteCard = useCallback((card) => {
@@ -80,6 +85,7 @@ function App() {
                 .then(() => {
                     setCards((cards) => cards.filter((curCard) => curCard._id !== card._id));
                 })
+                .catch(() => console.log('deleteCard'))
         }
     }, [currentUser._id])
 
@@ -89,12 +95,14 @@ function App() {
             api.like(card._id).then((newCard) => {
                 setCards((cards) => cards.map((c) => c._id === card._id ? newCard : c));
             })
+                .catch(() =>console.log('like'));
         }
         else {
             api.unlike(card._id)
                 .then((newCard) => {
                     setCards((cards) => cards.map((c) => c._id === card._id ? newCard : c));
                 })
+                .catch(() => console.log('unlike'));
         }
     }
 
