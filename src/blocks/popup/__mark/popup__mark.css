@@ -1,0 +1,16 @@
+.popup__mark {
+    width: 120px;
+    height: 120px;
+}
+
+@media screen and (min-width: 900px) {
+    .popup__mark {
+        margin: 60px auto 32px;        
+    }
+}
+
+@media screen and (max-width: 900px) {
+    .popup__mark {
+        margin: 50px auto 40px;        
+    }
+}

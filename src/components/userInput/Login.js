@@ -1,6 +1,6 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import Entrance from './Entance';
+import Entrance from './Entrance';
 
 function Login(props) {
 
