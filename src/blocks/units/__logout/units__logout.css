@@ -1,0 +1,12 @@
+.units__logout{
+    font-family: 400;
+    font-size: 18px;
+    color: #A9A9A9;
+    line-height: 22px;
+    margin:18px auto 40px;
+    cursor: pointer;
+}
+
+.header .units__logout{
+    margin: 0;
+}

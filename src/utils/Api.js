@@ -1,9 +1,10 @@
 import { personalInfo } from "./constants";
 
 class Api {
-    constructor({ headers, cohortURL }) {
+    constructor({ headers, cohortURL, authURL}) {
         this._headers = headers;
-        this._cohortURL = cohortURL;;
+        this._cohortURL = cohortURL;
+        this._authURL = authURL;
     }
 
     _getResponse(res) {
@@ -83,13 +84,50 @@ class Api {
                 link: link
             })
         })
-
     }
+
+    signup(password, email) {
+        return this._request(`${this._authURL}/signup`,{
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+              },
+            body: JSON.stringify({
+                "password": `${password}`,
+                "email": `${email}`
+            })
+        })
+    }
+
+    signin(password, email) {
+        return this._request(`${this._authURL}/signin`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+              },
+            body: JSON.stringify({
+                "password": `${password}`,
+                "email": `${email}`
+            })
+        })
+    }
+
+    checkToken() {
+        return this._request(`${this._authURL}/users/me`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                "Authorization" : `Bearer ${localStorage.getItem('jwt')}`
+              }
+        })
+    }
+
 }
 
 const api = new Api({
     headers: personalInfo.headers,
-    cohortURL: personalInfo.cohortURL
+    cohortURL: personalInfo.cohortURL,
+    authURL: 'https://auth.nomoreparties.co'
 });// чтобы не создавать новые
 
 export default api;

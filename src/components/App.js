@@ -1,13 +1,17 @@
 import React, { useState, useEffect, useCallback } from 'react';
+import { Route, Routes } from 'react-router-dom';
 import Header from './landing/Header.js';
 import Main from './landing/Main.js';
 import Footer from './landing/Footer.js';
-// import PopupWithForm from './popups/PopupWithForm.js';
 import ImagePopup from './popups/ImagePopup.js';
 import EditProfilePopup from './popups/EditProfilePopup.js';
 import EditAvatarPopup from './popups/EditAvatarPopup.js';
 import AddPopup from './popups/AddPopup.js';
 import CurrentUserContext from "../contexts/CurrentUserContext";
+import Register from './userInput/Register';
+import Login from './userInput/Login';
+import ProtectedRoute from './ProtectedRoute';
+import InfoToolTip from './popups/InfoToolTip';
 import api from '../utils/Api.js';
 
 function App() {
@@ -33,13 +37,62 @@ function App() {
         setIsImagePopupOpen(true);
     }
 
+    const [isInfoToolTipPopupOpen, setInfoToolTipPopupState] = useState(false);
+    const [isSignUpSucceed, setSignUpSuccessState] = useState(true);
+    const handleSignUp = (password, email) => {
+        api.signup(password, email)
+            .then(() => {
+                setSignUpSuccessState(true);
+                setInfoToolTipPopupState(true)
+            })
+            .catch((err) => {
+                console.log(err);
+                setSignUpSuccessState(false);
+                setInfoToolTipPopupState(true)
+            })
+    }
+
+    const [currentUserEmail, setCurrentUserEmail] = useState('example@yandex.com');
+    const [isLoggedIn, setLogInState] = useState(true);
+    useEffect(() => {
+        if (localStorage.getItem('jwt')) {
+            api.checkToken()
+                .then((data) => {
+                    setCurrentUser({ _id: `${data._id}` });
+                    setCurrentUserEmail(data.email);
+                    setLogInState(true)
+                })
+                .catch((err) => {
+                    console.log(err);
+                    setCurrentUser({ _id: ` ` });
+                    setCurrentUserEmail(' ');
+                    setLogInState(false)
+                })
+        }
+    }, [])
+    const handleSignIn = (password, email) => {
+        api.signin(password, email)
+            .then((data) => {
+                localStorage.setItem('jwt', data.token);
+                setLogInState(true);
+                setCurrentUserEmail(email)
+            })
+            .catch(err => console.log(err))
+    }
+    const handleLogOut = () => {
+        localStorage.removeItem('jwt');
+        setCurrentUser({ _id: '' });
+        setCurrentUserEmail('');
+        setLogInState(false);
+    }
+
     const closeAllPopups = () => {
         setIsEditProfilePopupOpen(false);
         setIsAddPlacePopupOpen(false);
         setIsEditAvatarPopupOpen(false);
         setIsImagePopupOpen(false);
         setSelectedCard({ name: '', link: '' });
-
+        setInfoToolTipPopupState(false);
     }
 
     const [currentUser, setCurrentUser] = useState({});
@@ -95,7 +148,7 @@ function App() {
             api.like(card._id).then((newCard) => {
                 setCards((cards) => cards.map((c) => c._id === card._id ? newCard : c));
             })
-                .catch(() =>console.log('like'));
+                .catch(() => console.log('like'));
         }
         else {
             api.unlike(card._id)
@@ -107,20 +160,40 @@ function App() {
     }
 
     return (
-        <div className='bodyscreen'>
-            <div className='root'>
-                <CurrentUserContext.Provider value={currentUser}>
-                    <Header />
-                    <Main
-                        onEditProfile={handleEditProfileClick}
-                        onEditAvatar={handleEditAvatarClick}
-                        onAddPlace={handleAddPlaceClick}
-                        onCardClick={handleCardClick}
-                        cards={cards}
-                        onCardLike={handleCardLike}
-                        onCardDelete={deleteCard}
-                    />
-                    <Footer />
+        <CurrentUserContext.Provider value={currentUser}>
+            <div className='bodyscreen'>
+                <div className='root'>                    
+                    <Routes>
+                        <Route path="/sign-up" element={
+                            <>
+                                <Header path={"/sign-up"} />
+                                <Register onSignUp={handleSignUp} />
+                            </>
+                        }>
+                        </Route>
+                        <Route path="/sign-in" element={
+                            <>
+                                <Header path={"/sign-in"} />
+                                <Login onLogin={handleSignIn} />
+                            </>
+                        }>
+                        </Route>
+                    </Routes>
+                    <ProtectedRoute path="/" loggedIn={isLoggedIn}>
+                        <>
+                            <Header path={"/"} email={currentUserEmail} onLogOut={handleLogOut} />
+                            <Main
+                                onCardClick={handleCardClick}
+                                onEditProfile={handleEditProfileClick}
+                                onEditAvatar={handleEditAvatarClick}
+                                onAddPlace={handleAddPlaceClick}
+                                cards={cards}
+                                onCardLike={handleCardLike}
+                                onCardDelete={deleteCard}
+                            />
+                            <Footer />
+                        </>
+                    </ProtectedRoute>
 
                     <EditProfilePopup
                         isOpen={isEditProfilePopupOpen}
@@ -142,10 +215,17 @@ function App() {
                         isOpen={isImagePopupOpen}
                         onClose={closeAllPopups}
                     />
-                </CurrentUserContext.Provider>
 
-            </div>
-        </div >
+                    <InfoToolTip
+                        isSucceed={isSignUpSucceed}
+                        name='info-tool-tip'
+                        isOpen={isInfoToolTipPopupOpen}
+                        onClose={closeAllPopups}
+                    />
+                </div>
+            </div >
+        </CurrentUserContext.Provider>
+
     );
 }
 

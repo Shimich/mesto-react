@@ -1,0 +1,31 @@
+.entrance__reg-link {
+    position: absolute;
+    left:0;
+    right: 0;
+    font-style: normal;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 17px;
+    display: flex;
+    align-self: center;
+    text-align: center;
+    justify-content: center;
+    color: #FFFFFF; 
+    text-decoration: none;    
+}
+
+.entrance__reg-link:hover {
+    opacity: .8;
+}
+
+@media screen and (max-width:600px) {
+    .entrance__reg-link {
+        bottom: 40px;
+    }
+}
+
+@media screen and (min-width:600px) {
+    .entrance__reg-link {
+       bottom: 80px;
+    }
+}

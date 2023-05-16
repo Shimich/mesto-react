@@ -1,0 +1,11 @@
+.units__email{
+    font-style: Medium;
+    font-family: 500;
+    font-size: 18px;
+    line-height: 22px;
+    margin-top: 40px;
+}
+
+.header .units__email{
+    margin: 0 24px 0 0;
+}

@@ -1,35 +1,10 @@
 import React, {useContext} from "react";
-//import api from '../../utils/Api.js';
+import api from '../../utils/Api.js';
 import Card from "../Card.js";
 import CurrentUserContext from "./../../contexts/CurrentUserContext"
 
 function Main(props) {
     const currentUser = useContext(CurrentUserContext);
-
-    // const [userName,setUserName] = React.useState('')
-    // const [userDescription, setUserDescription] = React.useState('')
-    // const [userAvatar, setUserAvatar] = React.useState('')
-    // const [cards, setCards] = React.useState([]);
-
-    //     React.useEffect(()=> {
-    //     api.getUserInfo()
-    //     .then((res)=> {
-    //         setUserName(res.name)
-    //         setUserDescription(res.about)
-    //         setUserAvatar(res.avatar)
-    //     })
-    //     .catch((err) => {
-    //         console.log(err); 
-    //       });
-
-    //     api.getInitialCards()
-    //     .then((res)=>{
-    //         setCards(res);
-    //     })
-    //     .catch((err) => {
-    //         console.log(err); 
-    //       });// вроде есть проверка в апи
-    // },[]) старое 
 
     return (
         <main className="content">
