@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { Route, Routes } from 'react-router-dom';
+import { Route, Routes, useNavigate } from 'react-router-dom';
 import Header from './landing/Header.js';
 import Main from './landing/Main.js';
 import Footer from './landing/Footer.js';
@@ -17,31 +17,33 @@ import api from '../utils/Api.js';
 function App() {
     const [isEditProfilePopupOpen, setIsEditProfilePopupOpen] = useState(false);
     const handleEditProfileClick = () => {
-        setIsEditProfilePopupOpen(true)
-    }
+        setIsEditProfilePopupOpen(true);
+    }//открытие попапа с именем//
 
     const [isAddPlacePopupOpen, setIsAddPlacePopupOpen] = useState(false);
     const handleAddPlaceClick = () => {
         setIsAddPlacePopupOpen(true);
-    }
+    }//попап с добавлением места
 
     const [isEditAvatarPopupOpen, setIsEditAvatarPopupOpen] = useState(false);
     const handleEditAvatarClick = () => {
         setIsEditAvatarPopupOpen(true);
-    }
+    }// попап аватара
 
     const [isImagePopupOpen, setIsImagePopupOpen] = useState(false);
     const [selectedCard, setSelectedCard] = useState({ name: '', link: '' });
-    const handleCardClick = (card) => {
+    const handleCardClick = (card) => {// должна принимать название и ссылку
         setSelectedCard(card);
         setIsImagePopupOpen(true);
-    }
+    }// попап картинки
 
     const [isInfoToolTipPopupOpen, setInfoToolTipPopupState] = useState(false);
     const [isSignUpSucceed, setSignUpSuccessState] = useState(true);
     const handleSignUp = (password, email) => {
+        console.log('регистрация ');
         api.signup(password, email)
-            .then(() => {
+            .then((data) => {
+                console.log(data,)
                 setSignUpSuccessState(true);
                 setInfoToolTipPopupState(true)
             })
@@ -50,10 +52,25 @@ function App() {
                 setSignUpSuccessState(false);
                 setInfoToolTipPopupState(true)
             })
-    }
-
+    }// попап авторизации 
+    const [currentUser, setCurrentUser] = useState({});
     const [currentUserEmail, setCurrentUserEmail] = useState('example@yandex.com');
-    const [isLoggedIn, setLogInState] = useState(true);
+    const [isLoggedIn, setLogInState] = useState(false);
+    const navigate = useNavigate();
+    const handleSignIn = (password, email) => {
+        console.log(' вход');
+        api.signin(password, email)
+            .then((data) => {
+                localStorage.setItem('jwt', data.token);
+                setLogInState(true);
+                setCurrentUserEmail(email);
+                navigate('/');
+            })
+            .catch(err => {
+                console.log(err);
+                setInfoToolTipPopupState(true)
+            })
+    }
     useEffect(() => {
         if (localStorage.getItem('jwt')) {
             api.checkToken()
@@ -70,15 +87,7 @@ function App() {
                 })
         }
     }, [])
-    const handleSignIn = (password, email) => {
-        api.signin(password, email)
-            .then((data) => {
-                localStorage.setItem('jwt', data.token);
-                setLogInState(true);
-                setCurrentUserEmail(email)
-            })
-            .catch(err => console.log(err))
-    }
+
     const handleLogOut = () => {
         localStorage.removeItem('jwt');
         setCurrentUser({ _id: '' });
@@ -95,7 +104,6 @@ function App() {
         setInfoToolTipPopupState(false);
     }
 
-    const [currentUser, setCurrentUser] = useState({});
     const handleUpdateUser = (name, description) => {
         api.patchUserInfo(name, description)
             .then(res => setCurrentUser(res))
@@ -124,7 +132,7 @@ function App() {
         api.getUserInfo()
             .then(setCurrentUser)
             .catch(() => console.log('getUserInfo'))
-    }, [])
+    }, [isLoggedIn])
 
     useEffect(() => {
         api.getInitialCards()
@@ -162,38 +170,41 @@ function App() {
     return (
         <CurrentUserContext.Provider value={currentUser}>
             <div className='bodyscreen'>
-                <div className='root'>                    
+                <div className='root'>
                     <Routes>
                         <Route path="/sign-up" element={
                             <>
                                 <Header path={"/sign-up"} />
                                 <Register onSignUp={handleSignUp} />
                             </>
-                        }>
-                        </Route>
+                        } />
+
                         <Route path="/sign-in" element={
                             <>
                                 <Header path={"/sign-in"} />
                                 <Login onLogin={handleSignIn} />
                             </>
-                        }>
-                        </Route>
+                        } />
+
+                        <Route path="/" element={
+                            <ProtectedRoute loggedIn={isLoggedIn}>
+                                <>
+                                    <Header path={"/"} email={currentUserEmail} onLogOut={handleLogOut} />
+                                    <Main
+                                        onCardClick={handleCardClick}
+                                        onEditProfile={handleEditProfileClick}
+                                        onEditAvatar={handleEditAvatarClick}
+                                        onAddPlace={handleAddPlaceClick}
+                                        cards={cards}
+                                        onCardLike={handleCardLike}
+                                        onCardDelete={deleteCard}
+                                    />
+                                    <Footer />
+                                </>
+                            </ProtectedRoute>
+                        } />
+
                     </Routes>
-                    <ProtectedRoute path="/" loggedIn={isLoggedIn}>
-                        <>
-                            <Header path={"/"} email={currentUserEmail} onLogOut={handleLogOut} />
-                            <Main
-                                onCardClick={handleCardClick}
-                                onEditProfile={handleEditProfileClick}
-                                onEditAvatar={handleEditAvatarClick}
-                                onAddPlace={handleAddPlaceClick}
-                                cards={cards}
-                                onCardLike={handleCardLike}
-                                onCardDelete={deleteCard}
-                            />
-                            <Footer />
-                        </>
-                    </ProtectedRoute>
 
                     <EditProfilePopup
                         isOpen={isEditProfilePopupOpen}
