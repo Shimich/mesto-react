@@ -8,8 +8,6 @@ function Header({ path, email, onLogOut }) {
     const [screenWidth, setScreenWidth] = useState(window.innerWidth);
     const [showUnits, setShowUnits] = useState(false);
 
-
-
     const styleStick = { backgroundColor: 'white', width: '24px', height: '2px' };
 
     const stiks = (<><div style={styleStick}></div>

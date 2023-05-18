@@ -55,10 +55,9 @@ function App() {
     }// попап авторизации 
     const [currentUser, setCurrentUser] = useState({});
     const [currentUserEmail, setCurrentUserEmail] = useState('example@yandex.com');
-    const [isLoggedIn, setLogInState] = useState(false);
+    const [isLoggedIn, setLogInState] = useState(true);
     const navigate = useNavigate();
     const handleSignIn = (password, email) => {
-        console.log(' вход');
         api.signin(password, email)
             .then((data) => {
                 localStorage.setItem('jwt', data.token);
@@ -68,16 +67,18 @@ function App() {
             })
             .catch(err => {
                 console.log(err);
+                setSignUpSuccessState(false);
                 setInfoToolTipPopupState(true)
             })
     }
     useEffect(() => {
         if (localStorage.getItem('jwt')) {
             api.checkToken()
-                .then((data) => {
-                    setCurrentUser({ _id: `${data._id}` });
+                .then((res) => {
+                    const data = res.data;
                     setCurrentUserEmail(data.email);
-                    setLogInState(true)
+                    setLogInState(true);
+                    navigate('/');
                 })
                 .catch((err) => {
                     console.log(err);
@@ -171,7 +172,9 @@ function App() {
         <CurrentUserContext.Provider value={currentUser}>
             <div className='bodyscreen'>
                 <div className='root'>
+
                     <Routes>
+
                         <Route path="/sign-up" element={
                             <>
                                 <Header path={"/sign-up"} />
